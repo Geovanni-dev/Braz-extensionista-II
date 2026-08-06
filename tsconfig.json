@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    /* Layout */
+    "rootDir": "src",
+    "outDir": "./dist",
+
+    /* Módulos e Ambiente */
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "types": ["node"],
+
+    /* Stricter Typechecking */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+
+    /* Interoperabilidade e Configs */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force"
+  },
+  "include": ["src/**/*", "src/server.ts", "prisma/Seed.js"]
+}
+
+
