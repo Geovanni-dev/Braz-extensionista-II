@@ -10,3 +10,44 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Professor {
+  id          String       @id @default(uuid())
+  nome        String
+  email       String       @unique
+  senha       String
+  disciplinas Disciplina[]
+}
+
+model Aluno {
+  id      String   @id @default(uuid())
+  nome    String
+  email   String   @unique
+  senha   String
+  resumos Resumo[]
+}
+
+model Disciplina {
+  id          String    @id @default(uuid())
+  nome        String
+  professorId String
+  professor   Professor @relation(fields: [professorId], references: [id])
+  sessoes     Sessao[]
+}
+
+model Sessao {
+  id           String     @id @default(uuid())
+  disciplinaId String
+  disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
+  abertaEm     DateTime   @default(now())
+  fechadaEm    DateTime?
+  resumos      Resumo[]
+}
+
+model Resumo {
+  id       String @id @default(uuid())
+  sessaoId String
+  sessao   Sessao @relation(fields: [sessaoId], references: [id])
+  alunoId  String
+  aluno    Aluno  @relation(fields: [alunoId], references: [id])
+}
