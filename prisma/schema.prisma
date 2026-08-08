@@ -13,9 +13,8 @@ datasource db {
 
 model Professor {
   id          String       @id @default(uuid())
-  nome        String
-  email       String       @unique
-  senha       String
+  nome        String       @unique
+  chave       String
   disciplinas Disciplina[]
 }
 
