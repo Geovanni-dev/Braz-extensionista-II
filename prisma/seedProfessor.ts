@@ -4,7 +4,7 @@ import logger from '../src/lib/logger.js';
 
 const prisma = new PrismaClient();
 
-export async function seedProfessors() {
+async function seedProfessors() {
   try {
     const professorDates = [
       { nome: 'Professora Meires', chave: '426$13aD' },
@@ -30,3 +30,5 @@ export async function seedProfessors() {
     await prisma.$disconnect();
   }
 }
+
+seedProfessors();
