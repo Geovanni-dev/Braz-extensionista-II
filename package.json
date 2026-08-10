@@ -11,7 +11,7 @@
     "dev": "nodemon --exec tsx src/server.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "seed": "tsx prisma/seed.ts",
+    "seed": "tsx prisma/SeedAlunos.ts",
     "format": "prettier --write \"**/*.{ts,mts,cts,js,json,md}\"",
     "lint": "eslint \"**/*.{ts,mts,cts,js}\"",
     "lint:fix": "eslint \"**/*.{ts,mts,cts,js}\" --fix"
@@ -20,6 +20,7 @@
   "author": "Geovani Rodrigues",
   "license": "MIT",
   "dependencies": {
+    "@google/genai": "^2.16.0",
     "@prisma/client": "6",
     "axios": "^1.15.2",
     "bcrypt": "^6.0.0",
