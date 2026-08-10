@@ -2,6 +2,11 @@ import prisma from '../../prisma/prismaClient.js';
 import logger from '../../logger.js';
 import { GoogleGenAI } from '@google/genai';
 import { promptBraz } from '../prompts/prompt.js';
+import {
+  AlunoNaoEncontradoError,
+  SessaoNaoEncontradaError,
+  IdAlunoNaoEncontradoError,
+} from '../../errors.js';
 
 // ---------------  GEMINI CLIENT
 const apiKey = process.env.GEMINI_API_KEY;
@@ -23,10 +28,8 @@ async function getSessaoAberta() {
   });
 
   if (!sessaoAberta) {
-    logger.info('Nenhuma sessão aberta encontrada.');
     return null;
   }
-
   logger.info(`Sessão aberta encontrada: ${sessaoAberta.id}`);
   return sessaoAberta;
 }
@@ -39,14 +42,14 @@ export const chatService = async (params: {
 }) => {
   const sessaoAberta = await getSessaoAberta();
   if (!sessaoAberta) {
-    return null;
+    throw new SessaoNaoEncontradaError('Sessão não encontrada');
   }
 
   const alunoId = process.env.DEFAULT_ALUNO_ID; //using a fixed ID from a test user until the student user routes are built
 
   if (!alunoId) {
-    throw new Error(
-      'Aluno padrão não encontrado. Verifique a variável de ambiente DEFAULT_ALUNO_ID.',
+    throw new IdAlunoNaoEncontradoError(
+      'Id do aluno não encontrado. Verifique a variável de ambiente DEFAULT_ALUNO_ID.',
     );
   }
   const aluno = await prisma.aluno.findUnique({
@@ -54,8 +57,7 @@ export const chatService = async (params: {
   });
 
   if (!aluno) {
-    logger.error('Aluno padrão não encontrado.');
-    return null;
+    throw new AlunoNaoEncontradoError('Aluno não encontrado');
   }
 
   const response = await genAI.models.generateContent({

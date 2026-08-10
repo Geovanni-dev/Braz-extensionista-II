@@ -2,6 +2,7 @@
 import 'dotenv/config';
 import express, { type Express } from 'express';
 import cors from 'cors';
+import chatRoutes from './lib/Braz/routes/chatRoutes.js';
 
 class Server {
   public app: Express;
@@ -21,6 +22,7 @@ class Server {
   }
 
   private routes(): void {
+    this.app.use('/chat', chatRoutes);
     this.app.get('/', (_req, res) => {
       res.send('Hello World!');
     });
