@@ -31,10 +31,10 @@ model Disciplina {
   nome        String    @unique
   professorId String
   professor   Professor @relation(fields: [professorId], references: [id])
-  sessoes     Sessao[]
+  aulas       Aula[]
 }
 
-model Sessao {
+model Aula {
   id           String     @id @default(uuid())
   disciplinaId String
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
@@ -44,9 +44,9 @@ model Sessao {
 }
 
 model Resumo {
-  id       String @id @default(uuid())
-  sessaoId String
-  sessao   Sessao @relation(fields: [sessaoId], references: [id])
-  alunoId  String
-  aluno    Aluno  @relation(fields: [alunoId], references: [id])
+  id      String @id @default(uuid())
+  aulaId  String
+  aula    Aula   @relation(fields: [aulaId], references: [id])
+  alunoId String
+  aluno   Aluno  @relation(fields: [alunoId], references: [id])
 }

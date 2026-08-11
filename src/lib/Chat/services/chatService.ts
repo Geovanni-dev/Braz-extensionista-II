@@ -4,9 +4,10 @@ import { GoogleGenAI } from '@google/genai';
 import { promptBraz } from '../prompts/prompt.js';
 import {
   AlunoNaoEncontradoError,
-  SessaoNaoEncontradaError,
+  AulaNaoEncontradaError,
   IdAlunoNaoEncontradoError,
 } from '../../errors.js';
+import { getChat, setChat } from './chatCache.js';
 
 // ---------------  GEMINI CLIENT
 const apiKey = process.env.GEMINI_API_KEY;
@@ -20,29 +21,26 @@ const genAI = new GoogleGenAI({ apiKey });
 
 //------------------AUXILIARY FUNCTIONS
 
-// function to check which session is active
-async function getSessaoAberta() {
-  const sessaoAberta = await prisma.sessao.findFirst({
+// function to check which class is active
+async function getAulaAberta() {
+  const aulaAberta = await prisma.aula.findFirst({
     where: { fechadaEm: null },
     include: { disciplina: true },
   });
 
-  if (!sessaoAberta) {
+  if (!aulaAberta) {
     return null;
   }
-  logger.info(`Sessão aberta encontrada: ${sessaoAberta.id}`);
-  return sessaoAberta;
+  logger.info(`Aula aberta encontrada: ${aulaAberta.id}`);
+  return aulaAberta;
 }
 
 //------------------SERVICE
 
-export const chatService = async (params: {
-  messages: string;
-  history: { role: string; text: string }[];
-}) => {
-  const sessaoAberta = await getSessaoAberta();
-  if (!sessaoAberta) {
-    throw new SessaoNaoEncontradaError('Sessão não encontrada');
+export const chatService = async (params: { messages: string }) => {
+  const aulaAberta = await getAulaAberta();
+  if (!aulaAberta) {
+    throw new AulaNaoEncontradaError('Aula não encontrada');
   }
 
   const alunoId = process.env.DEFAULT_ALUNO_ID; //using a fixed ID from a test user until the student user routes are built
@@ -60,19 +58,24 @@ export const chatService = async (params: {
     throw new AlunoNaoEncontradoError('Aluno não encontrado');
   }
 
+  const history = await getChat(aulaAberta.id, alunoId);
+
   const response = await genAI.models.generateContent({
     model: 'gemini-3.5-flash-lite',
     config: {
-      systemInstruction: promptBraz(sessaoAberta.disciplina.nome, aluno.nome),
+      systemInstruction: promptBraz(aulaAberta.disciplina.nome, aluno.nome),
     },
     contents: [
-      ...params.history.slice(-10).map((msg) => ({
+      ...history.slice(-20).map((msg: { role: string; text: string }) => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }],
       })),
       { role: 'user', parts: [{ text: params.messages }] },
     ],
   });
+
+  await setChat(aulaAberta.id, alunoId, 'user', params.messages);
+  await setChat(aulaAberta.id, alunoId, 'model', response.text ?? '');
 
   return response.text;
 };

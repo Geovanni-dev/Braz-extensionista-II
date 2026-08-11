@@ -2,16 +2,16 @@ import client from '../../redis/client.js';
 
 const TTL = 90 * 60; // 90 minutes
 
-const generateKey = (sessaoId: string, alunoId: string) =>
-  `chat:${alunoId}:${sessaoId}`;
+const generateKey = (aulaId: string, alunoId: string) =>
+  `chat:${alunoId}:${aulaId}`;
 
 export const setChat = async (
-  sessaoId: string,
+  aulaId: string,
   alunoId: string,
   role: 'user' | 'model',
   text: string,
 ) => {
-  const key = generateKey(sessaoId, alunoId);
+  const key = generateKey(aulaId, alunoId);
   const turn = JSON.stringify({ role, text });
 
   const length = await client.rPush(key, turn); // adds the turn to the end of the list; returns the new size of the list
@@ -23,18 +23,18 @@ export const setChat = async (
   return length;
 };
 
-export const getChat = async (sessaoId: string, alunoId: string) => {
-  const key = generateKey(sessaoId, alunoId);
+export const getChat = async (aulaId: string, alunoId: string) => {
+  const key = generateKey(aulaId, alunoId);
   const turns = await client.lRange(key, 0, -1); // returns the list of turns in the chat
   return turns.map((turn) => JSON.parse(turn));
 };
 
-export const hasChat = async (sessaoId: string, alunoId: string) => {
-  const key = generateKey(sessaoId, alunoId);
+export const hasChat = async (aulaId: string, alunoId: string) => {
+  const key = generateKey(aulaId, alunoId);
   return await client.exists(key);
 };
 
-export const deleteChat = async (sessaoId: string, alunoId: string) => {
-  const key = generateKey(sessaoId, alunoId);
+export const deleteChat = async (aulaId: string, alunoId: string) => {
+  const key = generateKey(aulaId, alunoId);
   return await client.del(key);
 };
