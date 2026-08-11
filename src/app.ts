@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import express, { type Express } from 'express';
 import cors from 'cors';
-import chatRoutes from './lib/Braz/routes/chatRoutes.js';
+import chatRoutes from './lib/Chat/routes/chatRoutes.js';
 
 class Server {
   public app: Express;
