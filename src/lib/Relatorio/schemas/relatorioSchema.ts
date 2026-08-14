@@ -6,5 +6,4 @@ export const relatorioSchema = z.object({
   observacoes: z.string().min(1),
 });
 
-// saida da IA, ainda nao persistida (o tipo Relatorio do Prisma e a linha do banco)
 export type RelatorioGerado = z.infer<typeof relatorioSchema>;

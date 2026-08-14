@@ -8,6 +8,7 @@ import {
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
 import { genAI } from '../../Gemini/client.js';
+
 //------------------AUXILIARY FUNCTIONS
 
 // function to check which class is active
