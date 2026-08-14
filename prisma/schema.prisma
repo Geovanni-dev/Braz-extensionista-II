@@ -7,8 +7,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum Esclarecidas {
+  SIM
+  PARCIAL
+  NAO
 }
 
 model Professor {
@@ -23,7 +29,7 @@ model Aluno {
   nome    String
   email   String   @unique
   senha   String
-  resumos Resumo[]
+  relatorios Relatorio[]
 }
 
 model Disciplina {
@@ -40,13 +46,17 @@ model Aula {
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
   abertaEm     DateTime   @default(now())
   fechadaEm    DateTime?
-  resumos      Resumo[]
+  relatorios   Relatorio[]
 }
 
-model Resumo {
-  id      String @id @default(uuid())
-  aulaId  String
-  aula    Aula   @relation(fields: [aulaId], references: [id])
-  alunoId String
-  aluno   Aluno  @relation(fields: [alunoId], references: [id])
+model Relatorio {
+  id          String       @id @default(uuid())
+  temas       String[]
+  esclarecida Esclarecidas
+  observacoes String
+  criadoEm    DateTime     @default(now())
+  aulaId      String
+  aula        Aula         @relation(fields: [aulaId], references: [id])
+  alunoId     String
+  aluno       Aluno        @relation(fields: [alunoId], references: [id])
 }

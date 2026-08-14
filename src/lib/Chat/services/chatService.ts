@@ -1,24 +1,13 @@
 import prisma from '../../prisma/prismaClient.js';
 import logger from '../../logger.js';
-import { GoogleGenAI } from '@google/genai';
-import { promptBraz } from '../prompts/prompt.js';
+import { promptBraz } from '../../prompts/promptSystem.js';
 import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
   IdAlunoNaoEncontradoError,
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
-
-// ---------------  GEMINI CLIENT
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  throw new Error(
-    'Chave da API Gemini não encontrada. Verifique a variável de ambiente GEMINI_API_KEY.',
-  );
-}
-
-const genAI = new GoogleGenAI({ apiKey });
-
+import { genAI } from '../../Gemini/client.js';
 //------------------AUXILIARY FUNCTIONS
 
 // function to check which class is active
