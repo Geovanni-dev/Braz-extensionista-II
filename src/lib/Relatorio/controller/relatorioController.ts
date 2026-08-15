@@ -11,6 +11,12 @@ import { relatorioService } from '../services/relatorioService.js';
 
 export const storeRelatorio = async (req: Request, res: Response) => {
   try {
+    const alunoId =
+      (req.headers['x-aluno-id'] as string) ||
+      (process.env.DEFAULT_ALUNO_ID as string);
+    if (!alunoId) {
+      return res.status(401).json({ error: 'Id do aluno não fornecido' });
+    }
     const aulaId = req.params.aulaId;
     if (!aulaId) {
       return res.status(400).json({ error: 'ID da aula não fornecido' });
@@ -21,7 +27,7 @@ export const storeRelatorio = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: 'ID da aula deve ser uma string valida' });
     }
-    const result = await relatorioService(aulaId);
+    const result = await relatorioService(aulaId, alunoId);
     return res.status(200).json(result);
   } catch (error) {
     logger.error(error);

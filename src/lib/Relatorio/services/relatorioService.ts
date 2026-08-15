@@ -3,7 +3,6 @@ import { promptRelatorio } from '../../prompts/promptSystem.js';
 import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
-  IdAlunoNaoEncontradoError,
   HistoricoNaoEncontradoError,
   RelatorioNaoEncontradoError,
   RelatorioInvalidoError,
@@ -14,7 +13,7 @@ import { relatorioSchema } from '../schemas/relatorioSchema.js';
 
 //------------------SERVICE
 
-export const relatorioService = async (aulaId: string) => {
+export const relatorioService = async (aulaId: string, alunoId: string) => {
   const aula = await prisma.aula.findUnique({
     where: { id: aulaId },
     include: { disciplina: true },
@@ -24,13 +23,6 @@ export const relatorioService = async (aulaId: string) => {
     throw new AulaNaoEncontradaError('Aula nao encontrada');
   }
 
-  const alunoId = process.env.DEFAULT_ALUNO_ID; //using a fixed ID from a test user until the student user routes are built
-
-  if (!alunoId) {
-    throw new IdAlunoNaoEncontradoError(
-      'Id do aluno não encontrado. Verifique a variável de ambiente DEFAULT_ALUNO_ID.',
-    );
-  }
   const aluno = await prisma.aluno.findUnique({
     where: { id: alunoId },
   });

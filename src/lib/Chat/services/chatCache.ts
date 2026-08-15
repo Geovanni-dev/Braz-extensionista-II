@@ -1,6 +1,6 @@
 import client from '../../redis/client.js';
 
-const TTL = 90 * 60; // 90 minutes
+const TTL = 15 * 24 * 60 * 60; // 15 days
 
 const generateKey = (aulaId: string, alunoId: string) =>
   `chat:${alunoId}:${aulaId}`;
