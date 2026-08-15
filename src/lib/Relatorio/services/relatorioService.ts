@@ -5,9 +5,12 @@ import {
   AulaNaoEncontradaError,
   IdAlunoNaoEncontradoError,
   HistoricoNaoEncontradoError,
+  RelatorioNaoEncontradoError,
+  RelatorioInvalidoError,
 } from '../../errors.js';
-import { getChat } from '../../Chat/services/chatCache.js';
+import { getChat, deleteChat } from '../../Chat/services/chatCache.js';
 import { genAI } from '../../Gemini/client.js';
+import { relatorioSchema } from '../schemas/relatorioSchema.js';
 
 //------------------SERVICE
 
@@ -69,6 +72,25 @@ export const relatorioService = async (aulaId: string) => {
       },
     ],
   });
+  if (!response.text) {
+    throw new RelatorioNaoEncontradoError('Relatório não gerado');
+  }
+  const relatorio = JSON.parse(response.text);
+  const validRelatorio = relatorioSchema.safeParse(relatorio);
+  if (!validRelatorio.success) {
+    throw new RelatorioInvalidoError('Relatório nao gerado');
+  }
 
-  return response.text;
+  const createRelatorio = await prisma.relatorio.create({
+    data: {
+      ...validRelatorio.data,
+      aulaId,
+      alunoId,
+    },
+  });
+
+  /* delete the chat key from Redis only after saving the report to Postgres, preventing the conversation history from being erased—and the report for that class from being lost—in the event of a database save error.*/
+  await deleteChat(aulaId, alunoId);
+
+  return createRelatorio;
 };
