@@ -3,7 +3,7 @@ import 'dotenv/config';
 import express, { type Express } from 'express';
 import cors from 'cors';
 import chatRoutes from './lib/Chat/routes/chatRoutes.js';
-
+import relatorioRoutes from './lib/Relatorio/routes/relatorioRoutes.js';
 class Server {
   public app: Express;
 
@@ -20,6 +20,7 @@ class Server {
 
   private routes(): void {
     this.app.use('/chat', chatRoutes);
+    this.app.use('/rekatorio', relatorioRoutes);
     this.app.get('/', (_req, res) => {
       res.send('Hello World!');
     });
