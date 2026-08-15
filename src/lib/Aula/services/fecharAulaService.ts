@@ -15,7 +15,8 @@ export const encerrarAula = async (aulaId: string) => {
     return {
       gerados: 0,
       falhas: 0,
-    }; /* It returns 0 because if the class is closed, it doesn't return a report; this way, I don't need to handle the undefined case in the controller.*/
+    }; /* It returns 0 because if the class is closed, it doesn't return a report; this way,
+    I don't need to handle the undefined case in the controller.*/
   }
   await prisma.aula.update({
     where: { id: aulaId },

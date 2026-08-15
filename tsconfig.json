@@ -29,5 +29,3 @@
   },
   "include": ["src/**/*", "src/server.ts", "prisma/Seed.js"]
 }
-
-
