@@ -11,7 +11,7 @@ import { genAI } from '../../Gemini/client.js';
 //------------------AUXILIARY FUNCTIONS
 
 // function to check which class is active
-async function getAulaAberta() {
+export async function getAulaAberta() {
   const aulaAberta = await prisma.aula.findFirst({
     where: { fechadaEm: null },
     include: { disciplina: true },

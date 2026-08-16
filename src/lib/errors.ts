@@ -5,3 +5,4 @@ export class IdAlunoNaoEncontradoError extends Error {}
 export class HistoricoNaoEncontradoError extends Error {}
 export class RelatorioNaoEncontradoError extends Error {}
 export class RelatorioInvalidoError extends Error {}
+export class DisciplinaNaoEncontrada extends Error {}
