@@ -8,6 +8,6 @@ const router = Router();
 
 router.post('/abrir', storeAbrirAula);
 
-router.post('/fechar', storeFecharAula);
+router.post('/:aulaId/fechar', storeFecharAula);
 
 export default router;
