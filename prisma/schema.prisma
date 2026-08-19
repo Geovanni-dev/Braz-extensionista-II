@@ -45,6 +45,7 @@ model Aula {
   disciplinaId String
   disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
   abertaEm     DateTime   @default(now())
+  pausada      Boolean    @default(false)
   fechadaEm    DateTime?
   relatorios   Relatorio[]
 }

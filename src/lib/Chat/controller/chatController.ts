@@ -5,6 +5,7 @@ import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
   IdAlunoNaoEncontradoError,
+  AulaPausadaError,
 } from '../../errors.js';
 
 export const storeChat = async (req: Request, res: Response) => {
@@ -23,6 +24,9 @@ export const storeChat = async (req: Request, res: Response) => {
     return res.status(200).json(result);
   } catch (error) {
     logger.error(error);
+    if (error instanceof AulaPausadaError) {
+      return res.status(403).json({ error: error.message });
+    }
     if (error instanceof IdAlunoNaoEncontradoError) {
       return res.status(500).json({
         error: error.message,

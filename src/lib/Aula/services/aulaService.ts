@@ -1,8 +1,32 @@
 import prisma from '../../prisma/prismaClient.js';
+import {
+  DisciplinaNaoEncontrada,
+  AulaNaoEncontradaError,
+} from '../../errors.js';
 import logger from '../../logger.js';
-import { AulaNaoEncontradaError } from '../../errors.js';
 import { hasChat } from '../../Chat/services/chatCache.js';
 import { relatorioService } from '../../Relatorio/services/relatorioService.js';
+
+export const abrirAula = async (disciplinaId: string) => {
+  const disciplina = await prisma.disciplina.findUnique({
+    where: { id: disciplinaId },
+  });
+  if (!disciplina) {
+    throw new DisciplinaNaoEncontrada('Disciplina não encontrada');
+  }
+  const aulaAberta = await prisma.aula.findFirst({
+    where: { fechadaEm: null },
+  });
+  if (aulaAberta) {
+    await encerrarAula(aulaAberta.id);
+  }
+  const iniciarAula = await prisma.aula.create({
+    data: {
+      disciplinaId,
+    },
+  });
+  return iniciarAula;
+};
 
 export const encerrarAula = async (aulaId: string) => {
   const aula = await prisma.aula.findUnique({
@@ -46,4 +70,21 @@ export const encerrarAula = async (aulaId: string) => {
     }
   }
   return { gerados, falhas };
+};
+
+export const alterarPausa = async (aulaId: string, pausada: boolean) => {
+  const aula = await prisma.aula.findUnique({
+    where: {
+      id: aulaId,
+      fechadaEm: null,
+    },
+  });
+  if (!aula) {
+    throw new AulaNaoEncontradaError('Aula não encontrada ou já foi encerrada');
+  }
+  const pausarAula = await prisma.aula.update({
+    where: { id: aulaId },
+    data: { pausada },
+  });
+  return pausarAula;
 };

@@ -1,11 +1,14 @@
 import type { Request, Response } from 'express';
 import logger from '../../logger.js';
-import { abrirAula } from '../services/abrirAula.js';
+import {
+  abrirAula,
+  encerrarAula,
+  alterarPausa,
+} from '../services/aulaService.js';
 import {
   DisciplinaNaoEncontrada,
   AulaNaoEncontradaError,
 } from '../../errors.js';
-import { encerrarAula } from '../services/encerrarAulaService.js';
 
 export const storeAbrirAula = async (req: Request, res: Response) => {
   try {
@@ -38,6 +41,50 @@ export const storeFecharAula = async (req: Request, res: Response) => {
     }
     const fecharAula = await encerrarAula(aulaId);
     return res.status(200).json(fecharAula);
+  } catch (error) {
+    logger.error(error);
+    if (error instanceof AulaNaoEncontradaError) {
+      return res.status(404).json({ error: error.message });
+    }
+  }
+  return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+};
+
+export const storePausarAula = async (req: Request, res: Response) => {
+  try {
+    const { aulaId } = req.params;
+    if (!aulaId) {
+      return res.status(400).json({ error: 'Aula não encontrada' });
+    }
+    if (typeof aulaId !== 'string') {
+      return res
+        .status(400)
+        .json({ error: 'O id da aula deve ser uma string' });
+    }
+    const result = await alterarPausa(aulaId, true);
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+    if (error instanceof AulaNaoEncontradaError) {
+      return res.status(404).json({ error: error.message });
+    }
+  }
+  return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+};
+
+export const storeDespausarAula = async (req: Request, res: Response) => {
+  try {
+    const { aulaId } = req.params;
+    if (!aulaId) {
+      return res.status(400).json({ error: 'Aula não encontrada' });
+    }
+    if (typeof aulaId !== 'string') {
+      return res
+        .status(400)
+        .json({ error: 'O id da aula deve ser uma string' });
+    }
+    const result = await alterarPausa(aulaId, false);
+    return res.status(200).json(result);
   } catch (error) {
     logger.error(error);
     if (error instanceof AulaNaoEncontradaError) {

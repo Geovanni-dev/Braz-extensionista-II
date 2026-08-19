@@ -4,6 +4,7 @@ import { promptBraz } from '../../prompts/promptSystem.js';
 import {
   AlunoNaoEncontradoError,
   AulaNaoEncontradaError,
+  AulaPausadaError,
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
 import { genAI } from '../../Gemini/client.js';
@@ -34,7 +35,11 @@ export const chatService = async (params: {
   if (!aulaAberta) {
     throw new AulaNaoEncontradaError('Aula não encontrada');
   }
-
+  if (aulaAberta.pausada) {
+    throw new AulaPausadaError(
+      'Braz está pausado no momento devido a professora precisa de sua atendção voltada a ela',
+    );
+  }
   const aluno = await prisma.aluno.findUnique({
     where: { id: params.alunoId },
   });
