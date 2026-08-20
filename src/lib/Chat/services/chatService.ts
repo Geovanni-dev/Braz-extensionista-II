@@ -37,7 +37,7 @@ export const chatService = async (params: {
   }
   if (aulaAberta.pausada) {
     throw new AulaPausadaError(
-      'Braz está pausado no momento devido a professora precisa de sua atendção voltada a ela',
+      'A professora pausou o chat neste momento. Assim que ela liberar, você pode voltar a perguntar.',
     );
   }
   const aluno = await prisma.aluno.findUnique({
