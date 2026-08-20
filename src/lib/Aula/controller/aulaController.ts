@@ -6,7 +6,7 @@ import {
   alterarPausa,
 } from '../services/aulaService.js';
 import {
-  DisciplinaNaoEncontrada,
+  DisciplinaNaoEncontradaError,
   AulaNaoEncontradaError,
 } from '../../errors.js';
 
@@ -20,7 +20,7 @@ export const storeAbrirAula = async (req: Request, res: Response) => {
     return res.status(201).json(aulaAberta);
   } catch (error) {
     logger.error(error);
-    if (error instanceof DisciplinaNaoEncontrada) {
+    if (error instanceof DisciplinaNaoEncontradaError) {
       return res.status(404).json({ error: error.message });
     }
   }

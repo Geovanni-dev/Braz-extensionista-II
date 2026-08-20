@@ -18,11 +18,11 @@ async function seedProfessors() {
   try {
     const chaves = chaveSchema.parse(process.env);
     const professorDates = [
-      { nome: 'Professora Meires', chave: chaves.CHAVE_MEIRES },
-      { nome: 'Professora Ariane', chave: chaves.CHAVE_ARIANE },
-      { nome: 'Professora Weslane', chave: chaves.CHAVE_WESLANE },
-      { nome: 'Professora Lucianne', chave: chaves.CHAVE_LUCIANNE },
-      { nome: 'Professora Helita', chave: chaves.CHAVE_HELITA },
+      { nome: 'Meires', chave: chaves.CHAVE_MEIRES },
+      { nome: 'Ariane', chave: chaves.CHAVE_ARIANE },
+      { nome: 'Weslane', chave: chaves.CHAVE_WESLANE },
+      { nome: 'Lucianne', chave: chaves.CHAVE_LUCIANNE },
+      { nome: 'Helita', chave: chaves.CHAVE_HELITA },
     ];
 
     // loop through the professorDates array and upsert each professor into the database
@@ -44,26 +44,26 @@ async function seedProfessors() {
 async function seedDisciplinas() {
   try {
     const disciplinaDates = [
-      { nome: 'Língua Portuguesa', professor: 'Professora Meires' },
-      { nome: 'Estudo Orientado de Português', professor: 'Professora Meires' },
-      { nome: 'Letramento Digital', professor: 'Professora Meires' },
+      { nome: 'Língua Portuguesa', professor: 'Meires' },
+      { nome: 'Estudo Orientado de Português', professor: 'Meires' },
+      { nome: 'Letramento Digital', professor: 'Meires' },
 
-      { nome: 'Ciências', professor: 'Professora Ariane' },
-      { nome: 'Geografia', professor: 'Professora Ariane' },
+      { nome: 'Ciências', professor: 'Ariane' },
+      { nome: 'Geografia', professor: 'Ariane' },
 
-      { nome: 'Matemática', professor: 'Professora Weslane' },
-      { nome: 'Inglês', professor: 'Professora Weslane' },
+      { nome: 'Matemática', professor: 'Weslane' },
+      { nome: 'Inglês', professor: 'Weslane' },
       {
         nome: 'Estudo Orientado de Matemática',
-        professor: 'Professora Weslane',
+        professor: 'Weslane',
       },
-      { nome: 'Pensamento Computacional', professor: 'Professora Weslane' },
+      { nome: 'Pensamento Computacional', professor: 'Weslane' },
 
-      { nome: 'Artes', professor: 'Professora Lucianne' },
-      { nome: 'Educação Física', professor: 'Professora Lucianne' },
+      { nome: 'Artes', professor: 'Lucianne' },
+      { nome: 'Educação Física', professor: 'Lucianne' },
 
-      { nome: 'História', professor: 'Professora Helita' },
-      { nome: 'Eletiva', professor: 'Professora Helita' },
+      { nome: 'História', professor: 'Helita' },
+      { nome: 'Eletiva', professor: 'Helita' },
     ];
 
     for (const disciplina of disciplinaDates) {

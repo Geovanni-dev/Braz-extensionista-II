@@ -15,10 +15,10 @@ router.use(authMiddlewareProfessor);
 
 router.post('/abrir', storeAbrirAula);
 
-router.post('/:aulaId/fechar', storeFecharAula);
+router.post('/fechar/:aulaId', storeFecharAula);
 
-router.post('/:aulaId/pausar', storePausarAula);
+router.post('/pausar/:aulaId', storePausarAula);
 
-router.post('/:aulaId/despausar', storeDespausarAula);
+router.post('/despausar/:aulaId', storeDespausarAula);
 
 export default router;

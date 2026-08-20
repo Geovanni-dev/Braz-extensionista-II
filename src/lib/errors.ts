@@ -5,8 +5,7 @@ export class IdAlunoNaoEncontradoError extends Error {}
 export class HistoricoNaoEncontradoError extends Error {}
 export class RelatorioNaoEncontradoError extends Error {}
 export class RelatorioInvalidoError extends Error {}
-export class DisciplinaNaoEncontrada extends Error {}
-export class ProfessoraNaoEncontrada extends Error {}
+export class DisciplinaNaoEncontradaError extends Error {}
+export class ProfessoraNaoEncontradaError extends Error {}
 export class AulaPausadaError extends Error {}
-export class ChaveSecretaNaoEncontradaError extends Error {}
 export class CredenciaisInvalidasError extends Error {}

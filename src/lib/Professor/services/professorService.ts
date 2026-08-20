@@ -1,5 +1,8 @@
 import prisma from '../../prisma/prismaClient.js';
-import { CredenciaisInvalidasError } from '../../errors.js';
+import {
+  CredenciaisInvalidasError,
+  ProfessoraNaoEncontradaError,
+} from '../../errors.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env.js';
@@ -34,4 +37,21 @@ export const loginProfessor = async (professorId: string, chave: string) => {
     expiresIn: '8h',
   });
   return { token };
+};
+
+export const updateNome = async (professorId: string, nome: string) => {
+  const professora = await prisma.professor.findUnique({
+    where: {
+      id: professorId,
+    },
+  });
+  if (!professora) {
+    throw new ProfessoraNaoEncontradaError('Professora não encontrada');
+  }
+  const professoraAtualizada = await prisma.professor.update({
+    where: { id: professorId },
+    data: { nome },
+    select: { id: true, nome: true },
+  });
+  return professoraAtualizada;
 };

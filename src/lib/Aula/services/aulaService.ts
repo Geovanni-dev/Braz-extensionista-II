@@ -1,6 +1,6 @@
 import prisma from '../../prisma/prismaClient.js';
 import {
-  DisciplinaNaoEncontrada,
+  DisciplinaNaoEncontradaError,
   AulaNaoEncontradaError,
 } from '../../errors.js';
 import logger from '../../logger.js';
@@ -12,7 +12,7 @@ export const abrirAula = async (disciplinaId: string) => {
     where: { id: disciplinaId },
   });
   if (!disciplina) {
-    throw new DisciplinaNaoEncontrada('Disciplina não encontrada');
+    throw new DisciplinaNaoEncontradaError('Disciplina não encontrada');
   }
   const aulaAberta = await prisma.aula.findFirst({
     where: { fechadaEm: null },
