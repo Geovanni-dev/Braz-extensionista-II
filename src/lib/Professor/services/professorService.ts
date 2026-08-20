@@ -6,6 +6,8 @@ import { env } from '../../config/env.js';
 
 const SECRET = env.JWT_SECRET;
 
+// ======== SERVICES
+
 export const getProfessor = async () => {
   const professor = await prisma.professor.findMany({
     select: {

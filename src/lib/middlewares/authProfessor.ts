@@ -11,7 +11,7 @@ const payloadSchema = z.object({
 
 export const SECRET = env.JWT_SECRET;
 
-export const authMiddleware = (
+export const authMiddlewareProfessor = (
   req: Request,
   res: Response,
   next: NextFunction,
