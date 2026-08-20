@@ -1,10 +1,4 @@
 import { GoogleGenAI } from '@google/genai';
+import { env } from '../config/env.js';
 
-const apiKey = process.env.GEMINI_API_KEY;
-if (!apiKey) {
-  throw new Error(
-    'Chave da API Gemini não encontrada. Verifique a variável de ambiente GEMINI_API_KEY.',
-  );
-}
-
-export const genAI = new GoogleGenAI({ apiKey });
+export const genAI = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });

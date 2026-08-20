@@ -1,18 +1,28 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import logger from '../src/lib/logger.js';
+import { z } from 'zod';
 
 const prisma = new PrismaClient();
+
+const chaveSchema = z.object({
+  CHAVE_MEIRES: z.string(),
+  CHAVE_ARIANE: z.string(),
+  CHAVE_WESLANE: z.string(),
+  CHAVE_LUCIANNE: z.string(),
+  CHAVE_HELITA: z.string(),
+});
 
 // Seed the professores
 async function seedProfessors() {
   try {
+    const chaves = chaveSchema.parse(process.env);
     const professorDates = [
-      { nome: 'Professora Meires', chave: '426$13aD' },
-      { nome: 'Professora Ariane', chave: '426e13a3' },
-      { nome: 'Professora Weslane', chave: '426$13aP' },
-      { nome: 'Professora Lucianne', chave: '426$13aB' },
-      { nome: 'Professora Helita', chave: '426$13a7' },
+      { nome: 'Professora Meires', chave: chaves.CHAVE_MEIRES },
+      { nome: 'Professora Ariane', chave: chaves.CHAVE_ARIANE },
+      { nome: 'Professora Weslane', chave: chaves.CHAVE_WESLANE },
+      { nome: 'Professora Lucianne', chave: chaves.CHAVE_LUCIANNE },
+      { nome: 'Professora Helita', chave: chaves.CHAVE_HELITA },
     ];
 
     // loop through the professorDates array and upsert each professor into the database

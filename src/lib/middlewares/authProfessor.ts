@@ -1,21 +1,17 @@
 import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
-import { ChaveSecretaNaoEncontradaError } from '../errors.js';
 import { z } from 'zod';
+import { env } from '../config/env.js';
 
+//====== schema zod
 const payloadSchema = z.object({
   id: z.string().uuid(),
   nome: z.string().min(3),
 });
 
-const SECRET = process.env.JWT_SECRET;
-if (!SECRET) {
-  throw new ChaveSecretaNaoEncontradaError(
-    'Chave secreta não definida no .env',
-  );
-}
+export const SECRET = env.JWT_SECRET;
 
-export const authMiddleware = async (
+export const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction,

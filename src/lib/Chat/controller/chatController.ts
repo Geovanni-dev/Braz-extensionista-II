@@ -7,15 +7,12 @@ import {
   IdAlunoNaoEncontradoError,
   AulaPausadaError,
 } from '../../errors.js';
+import { env } from '../../config/env.js';
 
 export const storeChat = async (req: Request, res: Response) => {
   try {
     const alunoId =
-      (req.headers['x-aluno-id'] as string) ||
-      (process.env.DEFAULT_ALUNO_ID as string);
-    if (!alunoId) {
-      return res.status(401).json({ error: 'Id do aluno não fornecido' });
-    }
+      (req.headers['x-aluno-id'] as string) || (env.DEFAULT_ALUNO_ID as string);
     const { messages } = req.body;
     if (!messages)
       return res.status(400).json({ error: 'Mensagens não fornecidas' });

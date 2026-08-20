@@ -28,7 +28,7 @@ class Server {
     this.app.use('/aula', aulaRoutes);
     this.app.use('/professor', professorRoutes);
     this.app.get('/', (_req, res) => {
-      res.send('Hello World!');
+      res.send('The server is up!');
     });
   }
 }
