@@ -8,3 +8,4 @@ export class RelatorioInvalidoError extends Error {}
 export class DisciplinaNaoEncontrada extends Error {}
 export class ProfessoraNaoEncontrada extends Error {}
 export class AulaPausadaError extends Error {}
+export class ChaveSecretaNaoEncontradaError extends Error {}
