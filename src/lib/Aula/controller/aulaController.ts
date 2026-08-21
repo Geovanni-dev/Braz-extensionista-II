@@ -5,6 +5,7 @@ import {
   encerrarAula,
   alterarPausa,
   getAulaAberta,
+  getAula,
 } from '../services/aulaService.js';
 import {
   DisciplinaNaoEncontradaError,
@@ -125,6 +126,16 @@ export const indexAulaAtual = async (_req: Request, res: Response) => {
       abertaEm: aula.abertaEm,
     };
     return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+  }
+  return res.status(500).json({ error: 'Erro ao processar solicitação' });
+};
+
+export const indexAula = async (_req: Request, res: Response) => {
+  try {
+    const aula = await getAula();
+    return res.status(200).json(aula);
   } catch (error) {
     logger.error(error);
   }

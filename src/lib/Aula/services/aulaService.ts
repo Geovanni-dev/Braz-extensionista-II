@@ -101,3 +101,19 @@ export const getAulaAberta = async () => {
   logger.info(`Aula aberta encontrada: ${aulaAberta.id}`);
   return aulaAberta;
 };
+
+export const getAula = async () => {
+  const aulas = await prisma.aula.findMany({
+    select: {
+      id: true,
+      disciplina: {
+        select: { nome: true },
+      },
+      abertaEm: true,
+      fechadaEm: true,
+    },
+    orderBy: { abertaEm: 'desc' },
+    take: 15,
+  });
+  return aulas;
+};
