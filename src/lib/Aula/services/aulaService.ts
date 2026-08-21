@@ -88,3 +88,16 @@ export const alterarPausa = async (aulaId: string, pausada: boolean) => {
   });
   return pausarAula;
 };
+
+export const getAulaAberta = async () => {
+  const aulaAberta = await prisma.aula.findFirst({
+    where: { fechadaEm: null },
+    include: { disciplina: true },
+  });
+
+  if (!aulaAberta) {
+    return null;
+  }
+  logger.info(`Aula aberta encontrada: ${aulaAberta.id}`);
+  return aulaAberta;
+};

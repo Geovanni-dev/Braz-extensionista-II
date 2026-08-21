@@ -4,6 +4,7 @@ import {
   abrirAula,
   encerrarAula,
   alterarPausa,
+  getAulaAberta,
 } from '../services/aulaService.js';
 import {
   DisciplinaNaoEncontradaError,
@@ -92,4 +93,40 @@ export const storeDespausarAula = async (req: Request, res: Response) => {
     }
   }
   return res.status(500).json({ error: 'Erro ao processar a solicitação' });
+};
+
+export const indexAulaAberta = async (_req: Request, res: Response) => {
+  try {
+    const aula = await getAulaAberta();
+    if (!aula) {
+      return res.status(200).json(null);
+    }
+    const result = {
+      disciplina: aula.disciplina.nome,
+      pausada: aula.pausada,
+    };
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+  }
+  return res.status(500).json({ error: 'Erro ao processar solicitação' });
+};
+
+export const indexAulaAtual = async (_req: Request, res: Response) => {
+  try {
+    const aula = await getAulaAberta();
+    if (!aula) {
+      return res.status(200).json(null);
+    }
+    const result = {
+      id: aula.id,
+      disciplina: aula.disciplina.nome,
+      pausada: aula.pausada,
+      abertaEm: aula.abertaEm,
+    };
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
+  }
+  return res.status(500).json({ error: 'Erro ao processar solicitação' });
 };

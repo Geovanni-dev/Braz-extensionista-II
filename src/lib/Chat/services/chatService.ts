@@ -1,5 +1,4 @@
 import prisma from '../../prisma/prismaClient.js';
-import logger from '../../logger.js';
 import { promptBraz } from '../../prompts/promptSystem.js';
 import {
   AlunoNaoEncontradoError,
@@ -8,22 +7,7 @@ import {
 } from '../../errors.js';
 import { getChat, setChat } from './chatCache.js';
 import { genAI } from '../../Gemini/client.js';
-
-//------------------AUXILIARY FUNCTIONS
-
-// function to check which class is active
-export async function getAulaAberta() {
-  const aulaAberta = await prisma.aula.findFirst({
-    where: { fechadaEm: null },
-    include: { disciplina: true },
-  });
-
-  if (!aulaAberta) {
-    return null;
-  }
-  logger.info(`Aula aberta encontrada: ${aulaAberta.id}`);
-  return aulaAberta;
-}
+import { getAulaAberta } from '../../Aula/services/aulaService.js';
 
 //------------------SERVICE
 
