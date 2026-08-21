@@ -55,3 +55,14 @@ export const updateNome = async (professorId: string, nome: string) => {
   });
   return professoraAtualizada;
 };
+
+export const getDisciplina = async (professorId: string) => {
+  const disciplinas = await prisma.disciplina.findMany({
+    where: { professorId },
+    select: {
+      id: true,
+      nome: true,
+    },
+  });
+  return disciplinas;
+};

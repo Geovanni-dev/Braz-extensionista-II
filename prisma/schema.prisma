@@ -19,6 +19,7 @@ enum Esclarecidas {
 
 model Professor {
   id          String       @id @default(uuid())
+  codigo      Int          @unique
   nome        String       @unique
   chave       String
   disciplinas Disciplina[]

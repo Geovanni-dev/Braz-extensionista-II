@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-
+import logger from '../src/lib/logger';
 import { z } from 'zod';
 
 const prisma = new PrismaClient();
@@ -22,7 +22,7 @@ const seed = async () => {
       email: process.env.ALUNO_EMAIL,
       senha: process.env.ALUNO_PASSWORD,
     });
-    console.log(' Dados validados pelo esquema do zod:');
+    logger.info('Dados validados pelo esquema do zod:');
 
     const passwordHash = await bcrypt.hash(senha, 10);
 
@@ -35,14 +35,14 @@ const seed = async () => {
         senha: passwordHash,
       },
     });
-    console.log(
+    logger.info(
       `Usuário criado/atualizado com sucesso: ${aluno.nome} (${aluno.email})`,
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('Erro de validação do zod:', error.issues);
+      logger.error('Erro de validação do zod:');
     } else {
-      console.error('Erro ao criar o usuário:', error);
+      logger.error('Erro ao criar o usuário:');
     }
   } finally {
     await prisma.$disconnect();

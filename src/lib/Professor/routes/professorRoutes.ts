@@ -3,6 +3,7 @@ import {
   indexProfessor,
   storeLogin,
   updateProfessorNome,
+  indexDisciplina,
 } from '../controller/professorController.js';
 import { loginLimiter } from '../../middlewares/rateLimit.js';
 import { authMiddlewareProfessor } from '../../middlewares/authProfessor.js';
@@ -10,6 +11,8 @@ import { authMiddlewareProfessor } from '../../middlewares/authProfessor.js';
 const router = Router();
 
 router.get('/', indexProfessor);
+
+router.get('/disciplina', authMiddlewareProfessor, indexDisciplina);
 
 router.post('/login', loginLimiter, storeLogin);
 

@@ -18,20 +18,24 @@ async function seedProfessors() {
   try {
     const chaves = chaveSchema.parse(process.env);
     const professorDates = [
-      { nome: 'Meires', chave: chaves.CHAVE_MEIRES },
-      { nome: 'Ariane', chave: chaves.CHAVE_ARIANE },
-      { nome: 'Weslane', chave: chaves.CHAVE_WESLANE },
-      { nome: 'Lucianne', chave: chaves.CHAVE_LUCIANNE },
-      { nome: 'Helita', chave: chaves.CHAVE_HELITA },
+      { codigo: 887, nome: 'Meires', chave: chaves.CHAVE_MEIRES },
+      { codigo: 998, nome: 'Ariane', chave: chaves.CHAVE_ARIANE },
+      { codigo: 455, nome: 'Weslane', chave: chaves.CHAVE_WESLANE },
+      { codigo: 300, nome: 'Lucianne', chave: chaves.CHAVE_LUCIANNE },
+      { codigo: 674, nome: 'Helita', chave: chaves.CHAVE_HELITA },
     ];
 
     // loop through the professorDates array and upsert each professor into the database
     for (const professor of professorDates) {
       const chaveHash = await bcrypt.hash(professor.chave, 10);
       await prisma.professor.upsert({
-        where: { nome: professor.nome },
+        where: { codigo: professor.codigo },
         update: { chave: chaveHash },
-        create: { nome: professor.nome, chave: chaveHash },
+        create: {
+          codigo: professor.codigo,
+          nome: professor.nome,
+          chave: chaveHash,
+        },
       });
     }
     return logger.info('Professores criados/atualizados com sucesso.');

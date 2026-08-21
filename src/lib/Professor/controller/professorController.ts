@@ -5,6 +5,7 @@ import {
   getProfessor,
   loginProfessor,
   updateNome,
+  getDisciplina,
 } from '../services/professorService.js';
 import logger from '../../logger.js';
 import {
@@ -66,6 +67,20 @@ export const updateProfessorNome = async (req: Request, res: Response) => {
         .status(409)
         .json({ error: 'Já existe uma professora com esse nome' });
     }
+  }
+  return res.status(500).json({ error: 'Erro ao processar solicitação' });
+};
+
+export const indexDisciplina = async (req: Request, res: Response) => {
+  try {
+    const professorId = req.professor?.id;
+    if (!professorId) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+    const result = await getDisciplina(professorId);
+    return res.status(200).json(result);
+  } catch (error) {
+    logger.error(error);
   }
   return res.status(500).json({ error: 'Erro ao processar solicitação' });
 };
