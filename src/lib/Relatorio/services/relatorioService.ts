@@ -86,3 +86,22 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
 
   return createRelatorio;
 };
+
+export const getRelatorios = async (aulaId: string) => {
+  const relatorios = await prisma.relatorio.findMany({
+    where: { aulaId },
+    select: {
+      id: true,
+      temas: true,
+      aluno: { select: { nome: true } },
+      esclarecida: true,
+      observacoes: true,
+    },
+    orderBy: {
+      aluno: {
+        nome: 'asc',
+      },
+    },
+  });
+  return relatorios;
+};

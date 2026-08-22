@@ -7,6 +7,7 @@ import {
   indexAulaAberta,
   indexAulaAtual,
   indexAula,
+  indexRelatorioAula,
 } from '../controller/aulaController.js';
 import { authMiddlewareProfessor } from '../../middlewares/authProfessor.js';
 
@@ -25,6 +26,8 @@ router.post('/fechar/:aulaId', storeFecharAula);
 router.post('/pausar/:aulaId', storePausarAula);
 
 router.post('/despausar/:aulaId', storeDespausarAula);
+
+router.get('/relatorio/:aulaId', indexRelatorioAula);
 
 router.get('/buscar-aula', indexAula);
 

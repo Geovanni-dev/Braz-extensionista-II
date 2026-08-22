@@ -7,6 +7,7 @@ import {
   getAulaAberta,
   getAula,
 } from '../services/aulaService.js';
+import { getRelatorios } from '../../Relatorio/services/relatorioService.js';
 import {
   DisciplinaNaoEncontradaError,
   AulaNaoEncontradaError,
@@ -136,6 +137,24 @@ export const indexAula = async (_req: Request, res: Response) => {
   try {
     const aula = await getAula();
     return res.status(200).json(aula);
+  } catch (error) {
+    logger.error(error);
+  }
+  return res.status(500).json({ error: 'Erro ao processar solicitação' });
+};
+export const indexRelatorioAula = async (req: Request, res: Response) => {
+  try {
+    const aulaId = req.params.aulaId;
+    if (!aulaId) {
+      return res.status(404).json({ error: 'Id da aula não fornecido' });
+    }
+    if (typeof aulaId !== 'string') {
+      return res
+        .status(400)
+        .json({ error: 'O id da aula deve ser uma string.' });
+    }
+    const relatorio = await getRelatorios(aulaId);
+    return res.status(200).json(relatorio);
   } catch (error) {
     logger.error(error);
   }
