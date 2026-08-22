@@ -11,7 +11,7 @@ import { getChat, deleteChat } from '../../Chat/services/chatCache.js';
 import { genAI } from '../../Gemini/client.js';
 import { relatorioSchema } from '../schemas/relatorioSchema.js';
 
-//------------------SERVICE
+//------------ services
 
 export const relatorioService = async (aulaId: string, alunoId: string) => {
   const aula = await prisma.aula.findUnique({

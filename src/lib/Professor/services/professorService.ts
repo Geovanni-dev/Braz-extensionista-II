@@ -7,9 +7,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/env.js';
 
+//--------- config
+
 const SECRET = env.JWT_SECRET;
 
-// ======== SERVICES
+//---------------services
 
 export const getProfessor = async () => {
   const professor = await prisma.professor.findMany({

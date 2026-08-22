@@ -14,7 +14,8 @@ import {
 } from '../../errors.js';
 import { editarNomeSchema } from '../schemas/professorSchema.js';
 
-// CONTROLLERS
+//-------- controllers
+
 export const indexProfessor = async (_req: Request, res: Response) => {
   try {
     const result = await getProfessor();

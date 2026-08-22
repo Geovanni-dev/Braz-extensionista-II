@@ -6,6 +6,7 @@ import { globalLimiter } from './lib/middlewares/rateLimit.js';
 import chatRoutes from './lib/Chat/routes/chatRoutes.js';
 import aulaRoutes from './lib/Aula/routes/aulaRoutes.js';
 import professorRoutes from './lib/Professor/routes/professorRoutes.js';
+import alunoRoutes from './lib/Aluno/routes/alunoRoutes.js';
 
 class Server {
   public app: Express;
@@ -27,6 +28,7 @@ class Server {
     this.app.use('/chat', chatRoutes);
     this.app.use('/aula', aulaRoutes);
     this.app.use('/professor', professorRoutes);
+    this.app.use('/aluno', alunoRoutes);
     this.app.get('/', (_req, res) => {
       res.send('The server is up!');
     });

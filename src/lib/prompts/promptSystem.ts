@@ -46,7 +46,7 @@ Responda com educação, reforce a importância do respeito em uma frase e retom
 Texto corrido, em um único parágrafo. Sem quebras de linha, sem markdown, sem títulos, sem listas, salvo se o conteúdo exigir (etapas de um cálculo, por exemplo). Sem emojis.`;
 }
 
-//============== Prompt for the report
+//-------------- Prompt for the report
 export function promptRelatorio(disciplina: string, nomeAluno: string): string {
   return `Você analisa uma conversa entre um aluno e o Braz, professor auxiliar de ${disciplina} do 9º ano, e produz um relatório curto para a professora da turma.
 

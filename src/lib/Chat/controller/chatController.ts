@@ -9,6 +9,8 @@ import {
 } from '../../errors.js';
 import { env } from '../../config/env.js';
 
+//--------------- controller
+
 export const storeChat = async (req: Request, res: Response) => {
   try {
     const alunoId =

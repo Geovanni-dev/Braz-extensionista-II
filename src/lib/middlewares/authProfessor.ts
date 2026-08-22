@@ -3,7 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { env } from '../config/env.js';
 
-//====== schema zod
+//------ schema zod
 const payloadSchema = z.object({
   id: z.string().uuid(),
   nome: z.string().min(3),

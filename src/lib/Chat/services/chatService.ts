@@ -9,7 +9,7 @@ import { getChat, setChat } from './chatCache.js';
 import { genAI } from '../../Gemini/client.js';
 import { getAulaAberta } from '../../Aula/services/aulaService.js';
 
-//------------------SERVICE
+//-------- service
 
 export const chatService = async (params: {
   messages: string;

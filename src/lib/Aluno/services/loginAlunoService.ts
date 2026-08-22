@@ -5,8 +5,12 @@ import jwt from 'jsonwebtoken';
 import { env } from '../../config/env.js';
 import { CodigoDaTurmaInvalidoError } from '../../errors.js';
 
+//-------------- configs
+
 const SECRET = env.JWT_SECRET;
 const codigoTurma = env.CODIGO_TURMA;
+
+// --------- services
 
 export const registro = async (payload: LoginValido) => {
   if (payload.codigo !== codigoTurma) {

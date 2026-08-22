@@ -13,6 +13,8 @@ import {
   AulaNaoEncontradaError,
 } from '../../errors.js';
 
+//------------controllers
+
 export const storeAbrirAula = async (req: Request, res: Response) => {
   try {
     const disciplinaId = req.body.disciplinaId;

@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 const prisma = new PrismaClient();
 
-//===================================== zod
+//------------------------------------- zod
 
 const alunoSchema = z.object({
   nome: z.string().min(3),
@@ -13,7 +13,7 @@ const alunoSchema = z.object({
   senha: z.string().min(6),
 });
 
-//=============================== seed
+//------------------------------- seed
 
 const seed = async () => {
   try {

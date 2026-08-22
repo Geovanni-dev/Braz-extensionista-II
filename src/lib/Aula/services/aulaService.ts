@@ -7,6 +7,8 @@ import logger from '../../logger.js';
 import { hasChat } from '../../Chat/services/chatCache.js';
 import { relatorioService } from '../../Relatorio/services/relatorioService.js';
 
+//-------- services
+
 export const abrirAula = async (disciplinaId: string) => {
   const disciplina = await prisma.disciplina.findUnique({
     where: { id: disciplinaId },
@@ -48,9 +50,7 @@ export const encerrarAula = async (aulaId: string) => {
       fechadaEm: new Date(),
     },
   });
-
   const alunos = await prisma.aluno.findMany();
-
   /*variables to store the number of generated reports and
   the number of errors encountered during generation*/
   let gerados = 0;
