@@ -12,7 +12,7 @@ import {
   CredenciaisInvalidasError,
   ProfessoraNaoEncontradaError,
 } from '../../errors.js';
-import { editarNomeSchema } from '../schema/professorSchema.js';
+import { editarNomeSchema } from '../schemas/professorSchema.js';
 
 // CONTROLLERS
 export const indexProfessor = async (_req: Request, res: Response) => {

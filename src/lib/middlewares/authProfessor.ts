@@ -7,6 +7,7 @@ import { env } from '../config/env.js';
 const payloadSchema = z.object({
   id: z.string().uuid(),
   nome: z.string().min(3),
+  role: z.literal('professor'),
 });
 
 export const SECRET = env.JWT_SECRET;

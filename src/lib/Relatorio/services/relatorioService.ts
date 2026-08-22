@@ -70,7 +70,7 @@ export const relatorioService = async (aulaId: string, alunoId: string) => {
   const relatorio = JSON.parse(response.text);
   const validRelatorio = relatorioSchema.safeParse(relatorio);
   if (!validRelatorio.success) {
-    throw new RelatorioInvalidoError('Relatório nao gerado');
+    throw new RelatorioInvalidoError('Relatório não gerado');
   }
 
   const createRelatorio = await prisma.relatorio.create({

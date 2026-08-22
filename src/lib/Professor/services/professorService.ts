@@ -33,9 +33,13 @@ export const loginProfessor = async (professorId: string, chave: string) => {
   if (!chaveCorreta) {
     throw new CredenciaisInvalidasError('Credenciais inválidas');
   }
-  const token = jwt.sign({ id: professora.id, nome: professora.nome }, SECRET, {
-    expiresIn: '8h',
-  });
+  const token = jwt.sign(
+    { id: professora.id, nome: professora.nome, role: 'professor' },
+    SECRET,
+    {
+      expiresIn: '8h',
+    },
+  );
   return { token };
 };
 

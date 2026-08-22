@@ -9,3 +9,4 @@ export class DisciplinaNaoEncontradaError extends Error {}
 export class ProfessoraNaoEncontradaError extends Error {}
 export class AulaPausadaError extends Error {}
 export class CredenciaisInvalidasError extends Error {}
+export class CodigoDaTurmaInvalidoError extends Error {}
