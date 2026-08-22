@@ -9,7 +9,7 @@ import {
   indexAula,
   indexRelatorioAula,
 } from '../controller/aulaController.js';
-import { authMiddlewareProfessor } from '../../middlewares/authProfessor.js';
+import { authMiddlewareProfessor } from '../../middlewares/professor/authProfessor.js';
 
 const router = Router();
 

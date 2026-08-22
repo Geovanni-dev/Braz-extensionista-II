@@ -14,6 +14,10 @@ declare module 'express-serve-static-core' {
       id: string;
       nome: string;
     };
+    aluno?: {
+      id: string;
+      nome: string;
+    };
   }
 }
 

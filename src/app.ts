@@ -2,7 +2,7 @@
 import 'dotenv/config';
 import express, { type Express } from 'express';
 import cors from 'cors';
-import { globalLimiter } from './lib/middlewares/rateLimit.js';
+import { globalLimiter } from './lib/middlewares/rate-limit/rateLimit.js';
 import chatRoutes from './lib/Chat/routes/chatRoutes.js';
 import aulaRoutes from './lib/Aula/routes/aulaRoutes.js';
 import professorRoutes from './lib/Professor/routes/professorRoutes.js';

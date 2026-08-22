@@ -1,16 +1,13 @@
 import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
-import { z } from 'zod';
-import { env } from '../config/env.js';
+import { payloadProfessorSchema } from '../schemas/middlewareSchema.js';
+import { env } from '../../config/env.js';
 
-//------ schema zod
-const payloadSchema = z.object({
-  id: z.string().uuid(),
-  nome: z.string().min(3),
-  role: z.literal('professor'),
-});
+//------- configs
 
-export const SECRET = env.JWT_SECRET;
+const SECRET = env.JWT_SECRET;
+
+// -------- middleware
 
 export const authMiddlewareProfessor = (
   req: Request,
@@ -18,7 +15,7 @@ export const authMiddlewareProfessor = (
   next: NextFunction,
 ) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
+  if (!authHeader?.startsWith('Bearer')) {
     return res.status(401).json({ error: 'Token não fornecido' });
   }
 
@@ -28,7 +25,7 @@ export const authMiddlewareProfessor = (
   }
   try {
     const payload = jwt.verify(token, SECRET);
-    const payloadValidado = payloadSchema.parse(payload);
+    const payloadValidado = payloadProfessorSchema.parse(payload);
     req.professor = {
       id: payloadValidado.id,
       nome: payloadValidado.nome,

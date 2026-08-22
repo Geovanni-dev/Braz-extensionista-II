@@ -5,8 +5,8 @@ import {
   updateProfessorNome,
   indexDisciplina,
 } from '../controller/professorController.js';
-import { loginLimiter } from '../../middlewares/rateLimit.js';
-import { authMiddlewareProfessor } from '../../middlewares/authProfessor.js';
+import { loginLimiterProfessor } from '../../middlewares/rate-limit/rateLimit.js';
+import { authMiddlewareProfessor } from '../../middlewares/professor/authProfessor.js';
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get('/', indexProfessor);
 
 router.get('/disciplina', authMiddlewareProfessor, indexDisciplina);
 
-router.post('/login', loginLimiter, storeLogin);
+router.post('/login', loginLimiterProfessor, storeLogin);
 
 router.patch('/nome', authMiddlewareProfessor, updateProfessorNome);
 
