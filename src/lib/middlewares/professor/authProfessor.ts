@@ -15,7 +15,7 @@ export const authMiddlewareProfessor = (
   next: NextFunction,
 ) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer')) {
+  if (!authHeader?.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Token não fornecido' });
   }
 
