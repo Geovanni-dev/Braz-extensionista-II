@@ -108,6 +108,7 @@ export const indexAulaAberta = async (_req: Request, res: Response) => {
     const result = {
       disciplina: aula.disciplina.nome,
       pausada: aula.pausada,
+      professor: aula.disciplina.professor.nome,
     };
     return res.status(200).json(result);
   } catch (error) {

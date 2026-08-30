@@ -44,7 +44,7 @@ export const loginLimiterAluno = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   store: criarStore('limiter:loginAluno:'),
-  keyGenerator: (req) => req.body?.aluno.id ?? ipKeyGenerator(req.ip ?? ''),
+  keyGenerator: (req) => req.body?.email ?? ipKeyGenerator(req.ip ?? ''),
   skipSuccessfulRequests: true,
   message: {
     error: 'Muitas tentativas de acesso. Aguarde um minuto e tente novamente.',

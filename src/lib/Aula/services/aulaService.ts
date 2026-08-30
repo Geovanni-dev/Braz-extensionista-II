@@ -92,7 +92,14 @@ export const alterarPausa = async (aulaId: string, pausada: boolean) => {
 export const getAulaAberta = async () => {
   const aulaAberta = await prisma.aula.findFirst({
     where: { fechadaEm: null },
-    include: { disciplina: true },
+    include: {
+      disciplina: {
+        select: {
+          nome: true,
+          professor: { select: { nome: true } },
+        },
+      },
+    },
   });
 
   if (!aulaAberta) {
