@@ -141,7 +141,7 @@ export const storeTrocarSenha = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Dados inválidos' });
     }
     if (error instanceof AlunoNaoEncontradoError) {
-      return res.status(401).json({ error: error.message });
+      return res.status(400).json({ error: error.message });
     }
     if (error instanceof CodigoExpiradoError) {
       return res.status(400).json({ error: error.message });

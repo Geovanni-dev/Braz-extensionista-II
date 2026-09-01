@@ -110,11 +110,12 @@ async function seedAluno() {
 
     const aluno = await prisma.aluno.upsert({
       where: { email },
-      update: { nome, senha: passwordHash },
+      update: { nome, senha: passwordHash, verificado: true },
       create: {
         nome,
         email,
         senha: passwordHash,
+        verificado: true,
       },
     });
     logger.info(

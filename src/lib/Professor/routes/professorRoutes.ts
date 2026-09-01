@@ -10,7 +10,7 @@ import { authMiddlewareProfessor } from '../../middlewares/professor/authProfess
 
 const router = Router();
 
-router.get('/', indexProfessor);
+router.get('/', indexProfessor, authMiddlewareProfessor);
 
 router.get('/disciplina', authMiddlewareProfessor, indexDisciplina);
 
