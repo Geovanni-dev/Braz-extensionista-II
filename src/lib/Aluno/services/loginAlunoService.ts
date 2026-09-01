@@ -20,6 +20,7 @@ import {
 } from '../../errors.js';
 import {
   enviarCodigoVerificacao,
+  enviarCodigoRecuperacao,
   gerarCodigo,
 } from '../../service/emailService.js';
 import {
@@ -28,6 +29,7 @@ import {
   deleteCodigoCache,
 } from './loginCache.js';
 import { Prisma } from '@prisma/client';
+import { setCodigoResetCache } from './resetCache.js';
 
 //-------------- configs
 
@@ -138,4 +140,19 @@ export const reenviarCodigo = async (payload: ReenviarCodigo) => {
   const codigo = gerarCodigo();
   await setCodigoCache(aluno.id, codigo);
   await enviarCodigoVerificacao(aluno.email, codigo, aluno.nome);
+};
+
+export const pedirTrocaSenha = async (payload: ReenviarCodigo) => {
+  const aluno = await prisma.aluno.findUnique({
+    where: { email: payload.email },
+    select: { id: true, email: true, nome: true },
+  });
+  if (!aluno) {
+    throw new AlunoNaoEncontradoError(
+      'Se o email estiver cadastrado, um codigo para redefinição',
+    );
+  }
+  const codigo = gerarCodigo();
+  await setCodigoResetCache(aluno.id, codigo);
+  await enviarCodigoRecuperacao(aluno.email, codigo, aluno.nome);
 };
