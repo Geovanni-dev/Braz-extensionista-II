@@ -15,3 +15,10 @@ export const loginSchema = z.object({
 });
 
 export type LoginValido = z.infer<typeof loginSchema>;
+
+export const validarCodigoSchema = z.object({
+  codigo: z.string().min(6, 'O codigo deve ter pelo menos 6 caracteres'),
+  email: z.string().email({ message: 'O email deve ser valido' }),
+});
+
+export type CodigoValido = z.infer<typeof validarCodigoSchema>;

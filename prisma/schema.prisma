@@ -26,10 +26,11 @@ model Professor {
 }
 
 model Aluno {
-  id      String   @id @default(uuid())
-  nome    String
-  email   String   @unique
-  senha   String
+  id         String      @id @default(uuid())
+  nome       String
+  email      String      @unique
+  senha      String
+  verificado Boolean     @default(false)
   relatorios Relatorio[]
 }
 
@@ -42,11 +43,11 @@ model Disciplina {
 }
 
 model Aula {
-  id           String     @id @default(uuid())
+  id           String      @id @default(uuid())
   disciplinaId String
-  disciplina   Disciplina @relation(fields: [disciplinaId], references: [id])
-  abertaEm     DateTime   @default(now())
-  pausada      Boolean    @default(false)
+  disciplina   Disciplina  @relation(fields: [disciplinaId], references: [id])
+  abertaEm     DateTime    @default(now())
+  pausada      Boolean     @default(false)
   fechadaEm    DateTime?
   relatorios   Relatorio[]
 }

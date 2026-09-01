@@ -11,3 +11,6 @@ export class CredenciaisInvalidasError extends Error {}
 export class CodigoDaTurmaInvalidoError extends Error {}
 export class SenhaIncorretaError extends Error {}
 export class ErroAoEnviarEmailError extends Error {}
+export class CodigoExpiradoError extends Error {}
+export class CodigoInvalidoError extends Error {}
+export class EmailNaoVerificadoError extends Error {}

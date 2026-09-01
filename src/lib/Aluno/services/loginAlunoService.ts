@@ -2,6 +2,7 @@ import prisma from '../../prisma/prismaClient.js';
 import type {
   RegistroValido,
   LoginValido,
+  CodigoValido,
 } from '../schemas/loginAlunoSchema.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -10,7 +11,19 @@ import {
   CodigoDaTurmaInvalidoError,
   AlunoNaoEncontradoError,
   SenhaIncorretaError,
+  CodigoExpiradoError,
+  CodigoInvalidoError,
+  EmailNaoVerificadoError,
 } from '../../errors.js';
+import {
+  enviarCodigoVerificacao,
+  gerarCodigo,
+} from '../../service/emailService.js';
+import {
+  setCodigoCache,
+  getCodigoCache,
+  deleteCodigoCache,
+} from './loginCache.js';
 
 //-------------- configs
 
@@ -31,6 +44,31 @@ export const registro = async (payload: RegistroValido) => {
       senha: senhaHash,
     },
   });
+  const codigo = gerarCodigo();
+  await setCodigoCache(aluno.id, codigo);
+  await enviarCodigoVerificacao(aluno.email, codigo, aluno.nome);
+};
+
+export const verificarCodigo = async (payload: CodigoValido) => {
+  const aluno = await prisma.aluno.findUnique({
+    where: { email: payload.email },
+    select: { id: true, nome: true },
+  });
+  if (!aluno) {
+    throw new AlunoNaoEncontradoError('Aluno não encontrado');
+  }
+  const codigoEnviado = await getCodigoCache(aluno.id);
+  if (!codigoEnviado) {
+    throw new CodigoExpiradoError('Código expirado');
+  }
+  if (codigoEnviado !== payload.codigo) {
+    throw new CodigoInvalidoError('Código inválido');
+  }
+  await prisma.aluno.update({
+    where: { id: aluno.id },
+    data: { verificado: true },
+  });
+  await deleteCodigoCache(aluno.id);
   const token = jwt.sign(
     { id: aluno.id, nome: aluno.nome, role: 'aluno' },
     SECRET,
@@ -47,6 +85,9 @@ export const login = async (payload: LoginValido) => {
   });
   if (!aluno) {
     throw new AlunoNaoEncontradoError('Email ou senha incorretos');
+  }
+  if (!aluno.verificado) {
+    throw new EmailNaoVerificadoError('Confirme seu email antes de entrar');
   }
   const senhaValida = await bcrypt.compare(payload.senha, aluno.senha);
   if (!senhaValida) {
