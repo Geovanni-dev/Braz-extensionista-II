@@ -7,24 +7,30 @@ export const registroSchema = z.object({
   codigo: z.string(),
 });
 
-export type RegistroValido = z.infer<typeof registroSchema>;
-
 export const loginSchema = z.object({
   email: z.string().email({ message: 'O email deve ser válido' }),
   senha: z.string().min(6, 'A senha deve ter no mínimo 6 caractéres '),
 });
-
-export type LoginValido = z.infer<typeof loginSchema>;
 
 export const validarCodigoSchema = z.object({
   codigo: z.string().min(6, 'O codigo deve ter pelo menos 6 caracteres'),
   email: z.string().email({ message: 'O email deve ser valido' }),
 });
 
-export type CodigoValido = z.infer<typeof validarCodigoSchema>;
-
 export const reenviarEmailSchema = z.object({
   email: z.string().email(),
 });
 
+export const trocarSenhaSchema = z.object({
+  email: z.string().email({ message: 'O email deve ser válido' }),
+  codigo: z.string().min(6, 'O codigo deve ter pelo menos 6 caracteres'),
+  senha: z.string().min(6, 'A senha deve ter no mínimo 6 caractéres '),
+});
+
+//---------------Types
+
+export type RegistroValido = z.infer<typeof registroSchema>;
+export type LoginValido = z.infer<typeof loginSchema>;
+export type CodigoValido = z.infer<typeof validarCodigoSchema>;
 export type ReenviarCodigo = z.infer<typeof reenviarEmailSchema>;
+export type TrocarSenha = z.infer<typeof trocarSenhaSchema>;
