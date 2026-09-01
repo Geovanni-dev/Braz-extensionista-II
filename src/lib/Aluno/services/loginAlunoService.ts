@@ -3,6 +3,7 @@ import type {
   RegistroValido,
   LoginValido,
   CodigoValido,
+  ReenviarCodigo,
 } from '../schemas/loginAlunoSchema.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -86,12 +87,12 @@ export const login = async (payload: LoginValido) => {
   if (!aluno) {
     throw new AlunoNaoEncontradoError('Email ou senha incorretos');
   }
-  if (!aluno.verificado) {
-    throw new EmailNaoVerificadoError('Confirme seu email antes de entrar');
-  }
   const senhaValida = await bcrypt.compare(payload.senha, aluno.senha);
   if (!senhaValida) {
     throw new SenhaIncorretaError('Email ou senha incorretos');
+  }
+  if (!aluno.verificado) {
+    throw new EmailNaoVerificadoError('Confirme seu email antes de entrar');
   }
   const { senha: _senha, ...resto } = aluno;
 
@@ -103,4 +104,20 @@ export const login = async (payload: LoginValido) => {
     },
   );
   return { token, aluno: resto };
+};
+
+export const reenviarCodigo = async (payload: ReenviarCodigo) => {
+  const aluno = await prisma.aluno.findUnique({
+    where: { email: payload.email },
+    select: { id: true, nome: true, email: true, verificado: true },
+  });
+  if (!aluno) {
+    throw new AlunoNaoEncontradoError('Aluno não encontrado');
+  }
+  if (aluno.verificado) {
+    throw new EmailNaoVerificadoError('Email ja verificado');
+  }
+  const codigo = gerarCodigo();
+  await setCodigoCache(aluno.id, codigo);
+  await enviarCodigoVerificacao(aluno.email, codigo, aluno.nome);
 };

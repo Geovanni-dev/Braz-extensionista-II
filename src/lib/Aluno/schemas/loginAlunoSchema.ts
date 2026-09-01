@@ -22,3 +22,9 @@ export const validarCodigoSchema = z.object({
 });
 
 export type CodigoValido = z.infer<typeof validarCodigoSchema>;
+
+export const reenviarEmailSchema = z.object({
+  email: z.string().email(),
+});
+
+export type ReenviarCodigo = z.infer<typeof reenviarEmailSchema>;
