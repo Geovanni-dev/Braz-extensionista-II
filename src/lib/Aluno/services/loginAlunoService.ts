@@ -15,6 +15,8 @@ import {
   CodigoExpiradoError,
   CodigoInvalidoError,
   EmailNaoVerificadoError,
+  EmailVerificadoError,
+  EmailJaCadastradoError,
 } from '../../errors.js';
 import {
   enviarCodigoVerificacao,
@@ -25,6 +27,7 @@ import {
   getCodigoCache,
   deleteCodigoCache,
 } from './loginCache.js';
+import { Prisma } from '@prisma/client';
 
 //-------------- configs
 
@@ -38,16 +41,26 @@ export const registro = async (payload: RegistroValido) => {
     throw new CodigoDaTurmaInvalidoError('Código da turma invalido');
   }
   const senhaHash = await bcrypt.hash(payload.senha, 10);
-  const aluno = await prisma.aluno.create({
-    data: {
-      nome: payload.nome,
-      email: payload.email,
-      senha: senhaHash,
-    },
-  });
-  const codigo = gerarCodigo();
-  await setCodigoCache(aluno.id, codigo);
-  await enviarCodigoVerificacao(aluno.email, codigo, aluno.nome);
+  try {
+    const aluno = await prisma.aluno.create({
+      data: {
+        nome: payload.nome,
+        email: payload.email,
+        senha: senhaHash,
+      },
+    });
+    const codigo = gerarCodigo();
+    await setCodigoCache(aluno.id, codigo);
+    await enviarCodigoVerificacao(aluno.email, codigo, aluno.nome);
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      throw new EmailJaCadastradoError('Esse email já está cadastrado');
+    }
+    throw error;
+  }
 };
 
 export const verificarCodigo = async (payload: CodigoValido) => {
@@ -87,6 +100,11 @@ export const login = async (payload: LoginValido) => {
   if (!aluno) {
     throw new AlunoNaoEncontradoError('Email ou senha incorretos');
   }
+  if (!aluno.verificado) {
+    throw new EmailNaoVerificadoError(
+      'Verifique seu email para ativar sua conta ',
+    );
+  }
   const senhaValida = await bcrypt.compare(payload.senha, aluno.senha);
   if (!senhaValida) {
     throw new SenhaIncorretaError('Email ou senha incorretos');
@@ -115,7 +133,7 @@ export const reenviarCodigo = async (payload: ReenviarCodigo) => {
     throw new AlunoNaoEncontradoError('Aluno não encontrado');
   }
   if (aluno.verificado) {
-    throw new EmailNaoVerificadoError('Email ja verificado');
+    throw new EmailVerificadoError('Email já verificado');
   }
   const codigo = gerarCodigo();
   await setCodigoCache(aluno.id, codigo);

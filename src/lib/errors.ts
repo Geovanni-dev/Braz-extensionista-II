@@ -14,3 +14,5 @@ export class ErroAoEnviarEmailError extends Error {}
 export class CodigoExpiradoError extends Error {}
 export class CodigoInvalidoError extends Error {}
 export class EmailNaoVerificadoError extends Error {}
+export class EmailVerificadoError extends Error {}
+export class EmailJaCadastradoError extends Error {}
