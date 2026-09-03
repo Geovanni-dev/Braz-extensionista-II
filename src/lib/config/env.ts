@@ -6,6 +6,7 @@ const envSchema = z.object({
   CODIGO_TURMA: z.string(),
   BREVO_EMAIL: z.string().email(),
   BREVO_API_KEY: z.string(),
+  CLIENT_URL: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

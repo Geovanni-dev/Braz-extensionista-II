@@ -53,3 +53,12 @@ export const chatService = async (params: {
 
   return response.text;
 };
+
+export const getChatAberto = async (alunoId: string) => {
+  const aulaAberta = await getAulaAberta();
+  if (!aulaAberta) {
+    throw new AulaNaoEncontradaError('Aula não encontrada');
+  }
+  const chatAberto = await getChat(aulaAberta.id, alunoId);
+  return chatAberto;
+};
