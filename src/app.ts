@@ -37,7 +37,7 @@ class Server {
     this.app.use('/professor', professorRoutes);
     this.app.use('/aluno', alunoRoutes);
     this.app.get('/', (_req, res) => {
-      res.send('The server is up!');
+      res.send('Servidor subiu com sucesso');
     });
   }
 }
