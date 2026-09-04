@@ -74,7 +74,7 @@ export const enviarCodigoVerificacao = async (
               </h2>
 
               <p style="color:#a0a0a0; font-size:16px; line-height:1.6; margin:0 0 32px 0;">
-                Olá, <strong style="color:#E6F0F5;">${name}</strong>. Use o código abaixo para confirmar sua conta e começar a estudar com o Braz. Ele expira em 15 minutos.
+                Olá, <strong style="color:#E6F0F5;">${name}</strong>. Use o código abaixo para confirmar sua conta e começar a estudar com o Braz. Ele expira em 5 minutos.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0F2D4D; border-radius:10px; margin-bottom:32px;">
@@ -151,7 +151,7 @@ export const enviarCodigoRecuperacao = async (
               </h2>
 
               <p style="color:#a0a0a0; font-size:16px; line-height:1.6; margin:0 0 32px 0;">
-                Olá, <strong style="color:#E6F0F5;">${name}</strong>. Recebemos um pedido para redefinir sua senha. Use o código abaixo para criar uma nova. Ele expira em 15 minutos.
+                Olá, <strong style="color:#E6F0F5;">${name}</strong>. Recebemos um pedido para redefinir sua senha. Use o código abaixo para criar uma nova. Ele expira em 5 minutos.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0F2D4D; border-radius:10px; margin-bottom:32px;">
@@ -168,7 +168,7 @@ export const enviarCodigoRecuperacao = async (
                 <tr>
                   <td style="padding:16px 20px;">
                     <p style="color:#a0a0a0; font-size:14px; line-height:1.6; margin:0;">
-                      Se você não pediu para redefinir sua senha, ignore este email — sua senha atual continua valendo. Se isso se repetir, avise sua professora.
+                      Se você não pediu para redefinir sua senha, ignore este email, sua senha atual continua valendo. Se isso se repetir, avise sua professora.
                     </p>
                   </td>
                 </tr>

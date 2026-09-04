@@ -17,6 +17,11 @@ enum Esclarecidas {
   NAO
 }
 
+enum TipoExclusao {
+  INDIVIDUAL
+  ANUAL
+}
+
 model Professor {
   id          String       @id @default(uuid())
   codigo      Int          @unique
@@ -62,4 +67,13 @@ model Relatorio {
   aula        Aula         @relation(fields: [aulaId], references: [id])
   alunoId     String
   aluno       Aluno        @relation(fields: [alunoId], references: [id])
+}
+
+model RegistroExclusao {
+  id                  String       @id @default(uuid())
+  tipo                TipoExclusao
+  relatoriosExcluidos Int
+  aulasExcluidas      Int
+  alunosExcluidos     Int
+  executadoEm         DateTime     @default(now())
 }

@@ -1,6 +1,6 @@
 import client from '../../redis/client.js';
 
-const TTL = 15 * 60;
+const TTL = 5 * 60;
 
 const generateKey = (alunoId: string) => `codigo:${alunoId}`;
 

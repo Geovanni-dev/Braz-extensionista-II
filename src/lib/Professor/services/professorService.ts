@@ -14,14 +14,15 @@ const SECRET = env.JWT_SECRET;
 //---------------services
 
 export const getProfessor = async () => {
-  const professor = await prisma.professor.findMany({
+  const professores = await prisma.professor.findMany({
     select: {
       nome: true,
       id: true,
+      disciplinas: { select: { nome: true } },
     } /* filtered to avoid returning all information about the teachers,
     including each one's access key */,
   });
-  return professor;
+  return professores;
 };
 
 export const loginProfessor = async (professorId: string, chave: string) => {
